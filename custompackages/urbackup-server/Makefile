@@ -58,17 +58,3 @@ define Package/urbackup-server/install
 endef
 
 $(eval $(call BuildPackage,urbackup-server))
-
-
-#	$(INSTALL_DIR) $(1)/usr/share/urbackup/www
-#	$(INSTALL_DIR) $(1)/usr/share/urbackup/www/css
-#	$(INSTALL_DIR) $(1)/usr/share/urbackup/www/fonts
-#	$(INSTALL_DIR) $(1)/usr/share/urbackup/www/images
-#	$(INSTALL_DIR) $(1)/usr/share/urbackup/www/js
-#	$(INSTALL_DIR) $(1)/usr/share/urbackup/www/js/vs
-#	$(INSTALL_DIR) $(1)/usr/share/urbackup/www/js/vs/base
-#	$(INSTALL_DIR) $(1)/usr/share/urbackup/www/js/vs/base/worker
-#	$(INSTALL_DIR) $(1)/usr/share/urbackup/www/js/vs/basic-languages
-#	$(INSTALL_DIR) $(1)/usr/share/urbackup/www/js/vs/basic-languages/src
-#	$(INSTALL_DIR) $(1)/usr/share/urbackup/www/js/vs/editor
-#	$(INSTALL_DIR) $(1)/usr/share/urbackup/www/swf

@@ -50,7 +50,7 @@ make menuconfig
 ```shell
 make package/urbackup-server/compile
 ```
-    if you have errors you can try compile with flag V=s to see what happens
+if you have errors you can try compile with flag V=s to see what happens
 ```shell
 make package/urbackup-server/compile V=s
 ```
