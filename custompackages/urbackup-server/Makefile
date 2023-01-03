@@ -24,12 +24,17 @@ define Package/urbackup-server
   TITLE:=UrBackup server backup system
   URL:=https://www.urbackup.org
   DEPENDS:=+zlib +libzstd +libcurl +libstdcpp
+  USERID:=urbackup:urbackup
 endef
 
 define Package/urbackup-server/description
   UrBackup is an easy to setup Open Source client/server backup system,
   that through a combination of image and file backups accomplishes both
   data safety and a fast restoration time.
+endef
+
+define Package/urbackup-server/conffiles
+/etc/config/urbackupsrv
 endef
 
 TARGET_CFLAGS += -DCRYPTOPP_DISABLE_ASM
@@ -45,14 +50,14 @@ define Package/urbackup-server/install
 	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/usr/bin/urbackup_mount_helper $(1)/usr/bin/
 	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/usr/bin/urbackup_snapshot_helper $(1)/usr/bin/
 	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/usr/bin/urbackupsrv $(1)/usr/bin/
-	$(INSTALL_DIR) $(1)/var/urbackup
-	$(INSTALL_DATA) $(PKG_INSTALL_DIR)/var/urbackup/* 	$(1)/var/urbackup/
 	$(INSTALL_DIR) $(1)/usr/share/urbackup
 	$(CP) $(PKG_INSTALL_DIR)/usr/share/urbackup/* $(1)/usr/share/urbackup/
-	$(INSTALL_DIR) $(1)/etc/default
-	$(INSTALL_BIN) $(PKG_BUILD_DIR)/defaults_server $(1)/etc/default/urbackupsrv
+	$(INSTALL_DIR) $(1)/etc/config
+	$(INSTALL_CONF) files/etc/config/urbackupsrv $(1)/etc/config/urbackupsrv
 	$(INSTALL_DIR) $(1)/etc/init.d
-	$(INSTALL_BIN) $(PKG_BUILD_DIR)/init.d_server $(1)/etc/init.d/urbackupsrv
+	$(INSTALL_BIN) files/etc/init.d/urbackupsrv $(1)/etc/init.d/urbackupsrv
+	$(INSTALL_DIR) $(1)/etc/urbackup
+	$(INSTALL_CONF) files/etc/urbackup/urbackupsrv.conf.template $(1)/etc/urbackup/urbackupsrv.conf.template
 	$(INSTALL_DIR) $(1)/etc/logrotate.d
 	$(INSTALL_CONF) $(PKG_BUILD_DIR)/logrotate_urbackupsrv $(1)/etc/logrotate.d/urbackupsrv
 endef

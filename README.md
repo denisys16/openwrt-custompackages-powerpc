@@ -1,5 +1,5 @@
 
-# How to build custom OpenWrtpackages:
+# How to build custom OpenWrt packages:
 #      UrBackup server
 #      Samba36
 # for WD My Book Live NAS (with powerpc cpu)
