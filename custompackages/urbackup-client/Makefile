@@ -25,7 +25,6 @@ define Package/urbackup-client
   TITLE:=UrBackup client backup system
   URL:=https://www.urbackup.org
   DEPENDS:=+zlib +libzstd +libopenssl +libstdcpp
-  USERID:=urbackup:urbackup
 endef
 
 define Package/urbackup-client/description
@@ -34,13 +33,26 @@ define Package/urbackup-client/description
   data safety and a fast restoration time.
 endef
 
-#define Package/urbackup-client/conffiles
-#/etc/config/urbackupsrv
-#endef
-
 TARGET_CFLAGS += -DCRYPTOPP_DISABLE_ASM
 
+CONFIGURE_ARGS:=$(filter-out	\
+	--program-prefix=%	\
+	--program-suffix=%	\
+	--prefix=%			\
+	--exec-prefix=%		\
+	--bindir=%			\
+	--sbindir=%			\
+	--libexecdir=%		\
+	--sysconfdir=%		\
+	--datadir=%			\
+	--localstatedir=%	\
+	--mandir=%			\
+	--infodir=%			\
+	, $(CONFIGURE_ARGS))
+
 CONFIGURE_ARGS+= \
+	--program-prefix= \
+	--sysconfdir=/etc \
 	--with-zlib="$(STAGING_DIR)/usr" \
 	--enable-embedded-cryptopp \
 	--enable-headless
@@ -50,15 +62,18 @@ define Package/urbackup-client/install
 	$(INSTALL_CONF) files/logrotate_urbackupclient $(1)/etc/logrotate.d/urbackupclient
 	$(INSTALL_DIR) $(1)/etc/init.d
 	$(INSTALL_BIN) files/urbackupclient $(1)/etc/init.d/urbackupclient
-	$(INSTALL_DIR) $(1)/usr/bin
-	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/usr/bin/blockalign $(1)/usr/bin/
-	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/usr/bin/urbackupclientctl $(1)/usr/bin/
-	$(INSTALL_DIR) $(1)/usr/sbin
-	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/usr/sbin/urbackupclientbackend $(1)/usr/sbin/
-	$(INSTALL_DIR) $(1)/usr/share/urbackup
-	$(CP) $(PKG_INSTALL_DIR)/usr/share/urbackup/* $(1)/usr/share/urbackup/
 	$(INSTALL_DIR) $(1)/etc/urbackup
 	$(INSTALL_CONF) files/urbackupclient.conf $(1)/etc/urbackup/urbackupclient.conf
+	$(CP) $(PKG_INSTALL_DIR)/etc/urbackup/* $(1)/etc/urbackup/
+	$(INSTALL_DIR) $(1)/usr/bin
+	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/usr/local/bin/blockalign $(1)/usr/bin/
+	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/usr/local/bin/urbackupclientctl $(1)/usr/bin/
+	$(INSTALL_DIR) $(1)/usr/sbin
+	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/usr/local/sbin/urbackupclientbackend $(1)/usr/sbin/
+	$(INSTALL_DIR) $(1)/usr/local/share/urbackup
+	$(CP) $(PKG_INSTALL_DIR)/usr/local/share/urbackup/* $(1)/usr/local/share/urbackup/
+	$(INSTALL_DIR) $(1)/usr/local/var/urbackup
+	$(CP) $(PKG_INSTALL_DIR)/usr/local/var/urbackup/* $(1)/usr/local/var/urbackup/
 endef
 
 $(eval $(call BuildPackage,urbackup-client))

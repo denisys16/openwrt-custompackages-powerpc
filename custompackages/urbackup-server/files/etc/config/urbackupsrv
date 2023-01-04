@@ -1,2 +1,0 @@
-config urbackupsrv 'config'
-    option work_dir '/mnt/data/urbackupsrv'

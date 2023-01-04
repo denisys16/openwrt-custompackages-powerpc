@@ -4,72 +4,34 @@ START=98
 STOP=05
 USE_PROCD=1
 
-PROG=/usr/bin/urbackupsrv
+
 PIDFILE=/var/run/urbackupsrv.pid
-user="urbackup"
-
-DAEMON_ARGS="run --config /var/etc/urbackupsrv.conf --daemon --pidfile $PIDFILE"
-
-config_get_sane() {
-    config_get "$@"
-    set -- "$(echo "$1" | tr -d '<>[]{};%?=#\n')"
-}
-
-init_config() {
-    config_load urbackupsrv
-    config_get_sane work_dir config work_dir "/var/urbackup"
-    daemon_tmpdir="$work_dir/tmp"
-
-    printf "\nTemp dir: $daemon_tmpdir\n"
-    printf "Work dir: $work_dir\n"
-
-    # if id $user &>/dev/null; then
-    #     printf "User $user is found.\n"
-    # else
-    #     printf "User $user is not found.\n"
-    #     ## opkg install shadow-useradd
-    #     useradd $user --system --user-group --home "$work_dir"
-    #     printf "User $user is added.\n"
-    # fi
-
-    chown -R $user:$user /usr/share/urbackup
-
-    [ -d $work_dir ] || mkdir -m 755 -p $work_dir
-    chmod 0755 $work_dir
-
-    [ -d $daemon_tmpdir ] || mkdir -m 755 -p $daemon_tmpdir
-    chmod 0755 $daemon_tmpdir
-
-    mkdir -p /var/etc
-    sed -e "s#|DAEMON_TMPDIR|#$daemon_tmpdir#g" \
-        -e "s#|USER|#$user#g" \
-        /etc/urbackup/urbackupsrv.conf.template > /var/etc/urbackupsrv.conf
-
-    ln -sf $work_dir /var/urbackup
-    chown $user:$user /var/etc/urbackupsrv.conf
-    chown -R $user:$user $work_dir
-    chown -R $user:$user /var/urbackup
-}
+DAEMON=/usr/bin/urbackupsrv
+DAEMON_CONF=/etc/urbackup/urbackupsrv.conf
+DAEMON_ARGS="run --config $DAEMON_CONF --daemon --pidfile $PIDFILE"
+USER="urbackup"
 
 
 start_service() {
 
-    init_config
+    #daemon_tmpdir="/usr/local/var/urbackup/tmp"
+    #[ -d $daemon_tmpdir ] || mkdir -m 755 -p $daemon_tmpdir
+    #chmod 0755 $daemon_tmpdir
+    #chown -R $USER:$USER $daemon_tmpdir
 
     procd_open_instance
-    procd_set_param command /usr/bin/urbackupsrv
+    procd_set_param command $DAEMON
     procd_append_param command $DAEMON_ARGS
-    procd_set_param user "$user"
-    procd_set_param group "$user"
+    procd_set_param user "$USER"
+    procd_set_param group "$USER"
     procd_set_param pidfile $PIDFILE
     procd_set_param stdout 1
     procd_set_param stderr 1
     procd_set_param respawn
     procd_set_param term_timeout 60
     procd_close_instance
-
 }
 
 stop_service() {
-    service_stop "/usr/bin/urbackupsrv"
+    service_stop "$DAEMON"
 }

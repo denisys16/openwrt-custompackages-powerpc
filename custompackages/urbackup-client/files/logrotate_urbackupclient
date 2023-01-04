@@ -5,6 +5,6 @@
 	create 640 root root
 	compress
 	postrotate
-		test -e /var/run/urbackupclient.pid && kill -HUP `cat /var/run/urbackupclient.pid` || /bin/systemctl kill -s HUP urbackup-client.service
+		test -e /var/run/urbackupclient.pid && kill -HUP `cat /var/run/urbackupclient.pid` || /bin/systemctl kill -s HUP /usr/sbin/urbackupclientbackend
 	endscript
 }
