@@ -14,10 +14,17 @@ USER="urbackup"
 
 start_service() {
 
-    #daemon_tmpdir="/usr/local/var/urbackup/tmp"
-    #[ -d $daemon_tmpdir ] || mkdir -m 755 -p $daemon_tmpdir
-    #chmod 0755 $daemon_tmpdir
-    #chown -R $USER:$USER $daemon_tmpdir
+    daemon_workdir="/usr/local/var/urbackup"
+    [ -d $daemon_workdir ] || mkdir -m 755 -p $daemon_workdir
+    chmod 0755 $daemon_workdir
+    chown -R $USER:$USER $daemon_workdir
+    
+    daemon_tmpdir="$workdir/tmp"
+    [ -d $daemon_tmpdir ] || mkdir -m 755 -p $daemon_tmpdir
+    chmod 0755 $daemon_tmpdir
+    chown -R $USER:$USER $daemon_tmpdir
+    
+    chown -R $USER:$USER /usr/local/share/urbackup
 
     procd_open_instance
     procd_set_param command $DAEMON
@@ -27,8 +34,6 @@ start_service() {
     procd_set_param pidfile $PIDFILE
     procd_set_param stdout 1
     procd_set_param stderr 1
-    procd_set_param respawn
-    procd_set_param term_timeout 60
     procd_close_instance
 }
 
