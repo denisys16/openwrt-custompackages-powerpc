@@ -53,6 +53,8 @@ CONFIGURE_ARGS:=$(filter-out	\
 CONFIGURE_ARGS+= \
 	--program-prefix= \
 	--sysconfdir=/etc \
+	--prefix=/usr/local/urbackupclient \
+	--exec-prefix=/usr \
 	--with-zlib="$(STAGING_DIR)/usr" \
 	--enable-embedded-cryptopp \
 	--enable-headless
@@ -64,16 +66,17 @@ define Package/urbackup-client/install
 	$(INSTALL_BIN) files/urbackupclient $(1)/etc/init.d/urbackupclient
 	$(INSTALL_DIR) $(1)/etc/urbackup
 	$(INSTALL_CONF) files/urbackupclient.conf $(1)/etc/urbackup/urbackupclient.conf
-	$(CP) $(PKG_INSTALL_DIR)/etc/urbackup/* $(1)/etc/urbackup/
+	$(INSTALL_CONF) $(PKG_INSTALL_DIR)/etc/urbackup/* $(1)/etc/urbackup/
 	$(INSTALL_DIR) $(1)/usr/bin
-	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/usr/local/bin/blockalign $(1)/usr/bin/
-	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/usr/local/bin/urbackupclientctl $(1)/usr/bin/
+	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/usr/bin/blockalign $(1)/usr/bin/
+	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/usr/bin/urbackupclientctl $(1)/usr/bin/
 	$(INSTALL_DIR) $(1)/usr/sbin
-	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/usr/local/sbin/urbackupclientbackend $(1)/usr/sbin/
-	$(INSTALL_DIR) $(1)/usr/local/share/urbackup
-	$(CP) $(PKG_INSTALL_DIR)/usr/local/share/urbackup/* $(1)/usr/local/share/urbackup/
-	$(INSTALL_DIR) $(1)/usr/local/var/urbackup
-	$(CP) $(PKG_INSTALL_DIR)/usr/local/var/urbackup/* $(1)/usr/local/var/urbackup/
+	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/usr/sbin/urbackupclientbackend $(1)/usr/sbin/
+	$(INSTALL_DIR) $(1)/usr/local/urbackupclient/share/urbackup
+	$(CP) $(PKG_INSTALL_DIR)/usr/local/urbackupclient/share/urbackup/* $(1)/usr/local/urbackupclient/share/urbackup/
+	$(INSTALL_DIR) $(1)/usr/local/urbackupclient/var/urbackup
+	$(INSTALL_DIR) $(1)/usr/local/urbackupclient/var/urbackup/tmp
+	$(CP) $(PKG_INSTALL_DIR)/usr/local/urbackupclient/var/urbackup/* $(1)/usr/local/urbackupclient/var/urbackup/
 endef
 
 $(eval $(call BuildPackage,urbackup-client))

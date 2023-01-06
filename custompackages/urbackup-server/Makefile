@@ -54,6 +54,8 @@ CONFIGURE_ARGS:=$(filter-out	\
 CONFIGURE_ARGS+= \
 	--program-prefix= \
 	--sysconfdir=/etc \
+	--prefix=/usr/local/urbackupsrv \
+	--exec-prefix=/usr \
 	--with-zlib="$(STAGING_DIR)/usr" \
 	--with-libcurl="$(STAGING_DIR)/usr" \
 	--enable-embedded-cryptopp \
@@ -61,13 +63,14 @@ CONFIGURE_ARGS+= \
 
 define Package/urbackup-server/install
 	$(INSTALL_DIR) $(1)/usr/bin
-	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/usr/local/bin/urbackup_mount_helper $(1)/usr/bin/
-	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/usr/local/bin/urbackup_snapshot_helper $(1)/usr/bin/
-	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/usr/local/bin/urbackupsrv $(1)/usr/bin/
-	$(INSTALL_DIR) $(1)/usr/local/share/urbackup
-	$(CP) $(PKG_INSTALL_DIR)/usr/local/share/urbackup/* $(1)/usr/local/share/urbackup/
-	$(INSTALL_DIR) $(1)/usr/local/var/urbackup
-	$(CP) $(PKG_INSTALL_DIR)/usr/local/var/urbackup/* $(1)/usr/local/var/urbackup/
+	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/usr/bin/urbackup_mount_helper $(1)/usr/bin/
+	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/usr/bin/urbackup_snapshot_helper $(1)/usr/bin/
+	$(INSTALL_BIN) $(PKG_INSTALL_DIR)/usr/bin/urbackupsrv $(1)/usr/bin/
+	$(INSTALL_DIR) $(1)/usr/local/urbackupsrv/share/urbackup
+	$(CP) $(PKG_INSTALL_DIR)/usr/local/urbackupsrv/share/urbackup/* $(1)/usr/local/urbackupsrv/share/urbackup/
+	$(INSTALL_DIR) $(1)/usr/local/urbackupsrv/var/urbackup
+	$(INSTALL_DIR) $(1)/usr/local/urbackupsrv/var/urbackup/tmp
+	$(CP) $(PKG_INSTALL_DIR)/usr/local/urbackupsrv/var/urbackup/* $(1)/usr/local/urbackupsrv/var/urbackup/
 	$(INSTALL_DIR) $(1)/etc/init.d
 	$(INSTALL_BIN) files/etc/init.d/urbackupsrv $(1)/etc/init.d/urbackupsrv
 	$(INSTALL_DIR) $(1)/etc/urbackup

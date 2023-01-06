@@ -14,17 +14,17 @@ USER="urbackup"
 
 start_service() {
 
-    daemon_workdir="/usr/local/var/urbackup"
-    [ -d $daemon_workdir ] || mkdir -m 755 -p $daemon_workdir
-    chmod 0755 $daemon_workdir
-    chown -R $USER:$USER $daemon_workdir
-    
-    daemon_tmpdir="$workdir/tmp"
-    [ -d $daemon_tmpdir ] || mkdir -m 755 -p $daemon_tmpdir
-    chmod 0755 $daemon_tmpdir
-    chown -R $USER:$USER $daemon_tmpdir
-    
-    chown -R $USER:$USER /usr/local/share/urbackup
+    # daemon_workdir="/usr/local/urbackupsrv/var/urbackup"
+    # [ -d $daemon_workdir ] || mkdir -m 755 -p $daemon_workdir
+    # chmod 0755 $daemon_workdir
+    # chown -R $USER:$USER $daemon_workdir
+    #
+    # daemon_tmpdir="$workdir/tmp"
+    # [ -d $daemon_tmpdir ] || mkdir -m 755 -p $daemon_tmpdir
+    # chmod 0755 $daemon_tmpdir
+    # chown -R $USER:$USER $daemon_tmpdir
+    #
+    # chown -R $USER:$USER /usr/local/urbackupsrv/share/urbackup
 
     procd_open_instance
     procd_set_param command $DAEMON
