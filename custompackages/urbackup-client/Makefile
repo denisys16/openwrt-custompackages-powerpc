@@ -24,7 +24,7 @@ define Package/urbackup-client
   CATEGORY:=Network
   TITLE:=UrBackup client backup system
   URL:=https://www.urbackup.org
-  DEPENDS:=+zlib +libzstd +libopenssl +libstdcpp
+  DEPENDS:=+zlib +libzstd +libopenssl +libstdcpp +libsqlite3
 endef
 
 define Package/urbackup-client/description
@@ -33,7 +33,7 @@ define Package/urbackup-client/description
   data safety and a fast restoration time.
 endef
 
-TARGET_CFLAGS += -DCRYPTOPP_DISABLE_ASM
+TARGET_CFLAGS += -DCRYPTOPP_DISABLE_ASM -DCRYPTOPP_BIG_ENDIAN
 
 CONFIGURE_ARGS:=$(filter-out	\
 	--program-prefix=%	\
@@ -56,8 +56,11 @@ CONFIGURE_ARGS+= \
 	--prefix=/usr/local/urbackupclient \
 	--exec-prefix=/usr \
 	--with-zlib="$(STAGING_DIR)/usr" \
+	--disable-clientupdate \
+	--enable-fortify \
 	--enable-embedded-cryptopp \
-	--enable-headless
+	--enable-headless \
+	--without-embedded-sqlite3
 
 define Package/urbackup-client/install
 	$(INSTALL_DIR) $(1)/etc/logrotate.d
