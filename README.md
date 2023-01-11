@@ -30,14 +30,9 @@ cd openwrt-sdk-22.03.3-apm821xx-sata_gcc-11.2.0_musl.Linux-x86_64
 
 4. Copy urbackup-server-package directory from this repository to SDK directory
 
-5 Insert a line with custompackages feed in top of feeds.conf.default (replace PATH_2_SDK by current path to SDK):
+5 Insert a line with custompackages feed in top of feeds.conf.default:
 ```shell
-src-link custompackages /PATH_2_SDK/openwrt-sdk-22.03.3-apm821xx-sata_gcc-11.2.0_musl.Linux-x86_64/custompackages
-```
-for example:
-
-```shell
-src-link custompackages /home/username/openwrt-sdk-22.03.3-apm821xx-sata_gcc-11.2.0_musl.Linux-x86_64/custompackages
+src-git-full custompackages https://github.com/denisys16/openwrt-custompackages-powerpc.git
 ```
 NOTE: if you want to override packages coming from an existing feed, you must write your custom feed ABOVE the line of the package feed containing the packages you want to override.
 
