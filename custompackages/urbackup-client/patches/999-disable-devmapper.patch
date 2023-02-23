@@ -1,0 +1,17 @@
+Index: urbackup-client-2.5.22.0/configure
+===================================================================
+--- urbackup-client-2.5.22.0.orig/configure
++++ urbackup-client-2.5.22.0/configure
+@@ -8561,9 +8561,9 @@ LIBS=$ac_check_lib_save_LIBS
+ fi
+ { $as_echo "$as_me:${as_lineno-$LINENO}: result: $ac_cv_lib_devmapper_dm_task_set_name" >&5
+ $as_echo "$ac_cv_lib_devmapper_dm_task_set_name" >&6; }
+-if test "x$ac_cv_lib_devmapper_dm_task_set_name" = xyes; then :
+-  HAVE_LIB_DEVICEMAPPER=1
+-fi
++# if test "x$ac_cv_lib_devmapper_dm_task_set_name" = xyes; then :
++#   HAVE_LIB_DEVICEMAPPER=1
++# fi
+ 
+ if test "x$HAVE_LIB_DEVICEMAPPER" = "x"; then :
+ 
